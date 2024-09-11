@@ -1,18 +1,18 @@
 
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
+// document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+//     anchor.addEventListener('click', function (e) {
+//         e.preventDefault();
 
-        const target = document.querySelector(this.getAttribute('href'));
-        window.scrollTo({
-            top: target.offsetTop,
-            behavior: 'smooth'
-        });
+//         const target = document.querySelector(this.getAttribute('href'));
+//         window.scrollTo({
+//             top: target.offsetTop,
+//             behavior: 'smooth'
+//         });
 
-        // Remove the hash from the URL
-        history.pushState("", document.title, window.location.pathname);
-    });
-});
+//         // Remove the hash from the URL
+//         history.pushState("", document.title, window.location.pathname);
+//     });
+// });
 
 
 var app = document.getElementById('type-text');
