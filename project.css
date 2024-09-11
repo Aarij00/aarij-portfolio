@@ -1,0 +1,152 @@
+:root {
+    --night: rgb(12, 24, 46);
+    --dark-grey: rgb(138, 145, 175);
+    --light-grey: rgb(206, 213, 245);
+    --cyan: rgb(132, 252, 219);
+}
+
+* {
+    background-color: var(--night);
+    margin: 0;
+    font-family: nobel, sans-serif;
+}
+
+
+#project-info {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.project-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 600px;
+}
+
+#project-desc {
+    color: var(--dark-grey);
+    /* width: 500px; */
+    font-size: 110%;
+    margin-top: 50px;
+    letter-spacing: 1px;
+}
+
+#project-title {
+    color: var(--light-grey);
+    font-size: 250%;
+    text-align: center;
+}
+
+
+.highlight {
+    color: var(--cyan);
+    /* background-color: black; */
+    margin: 0.1px;
+}
+
+.concept-images > h2 {
+    color: var(--light-grey);
+    font-size: 200%;
+    text-align: center;
+    margin-top: 70px;
+    margin-bottom: 40px;
+}
+.concept-image {
+    width: 250px;
+    height: 200px;
+    border-radius: 10px;
+    margin-left: 40px;
+}
+
+
+
+.project-video > h2 {
+    color: var(--light-grey);
+    font-size: 200%;
+    text-align: center;
+    margin-top: 70px;
+    margin-bottom: 40px;
+
+}
+
+.project-video video {
+    color: var(--light-grey);
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 8px;
+}
+
+
+.arduino-code > h2 {
+    color: var(--light-grey);
+    font-size: 200%;
+    text-align: center;
+    margin-top: 70px;
+    margin-bottom: 40px;
+}
+
+.arduino-code > pre {
+    color: var(--dark-grey);
+    /* width: 500px; */
+    font-size: 110%;
+    
+    letter-spacing: 1px;
+}
+
+.circuit-schematic > h2 {
+    color: var(--light-grey);
+    font-size: 200%;
+    text-align: center;
+    margin-top: 70px;
+    margin-bottom: 40px;
+}
+
+#circuit-schematic {
+    width: 600px;
+    height: 400px;
+    border-radius: 50px;
+}
+
+#reference-materials {
+    list-style-type: none; /* Remove default bullets */
+    padding-left: 0; /* Remove default padding */
+}
+
+.reference-materials > h2 {
+    color: var(--light-grey);
+    font-size: 200%;
+    text-align: center;
+    margin-top: 70px;
+    margin-bottom: 20px;
+}
+
+#reference-materials li {
+    position: relative; /* Positioning for custom bullet */
+    margin-bottom: 10px; /* Space between items */
+}
+
+#reference-materials li::before {
+    content: "\2022"; /* Unicode character for bullet */
+    color: var(--cyan); /* Color of the bullet */
+    font-size: 24px; /* Size of the bullet */
+    position: absolute; /* Position the bullet */
+    left: -30px; /* Adjust as needed */
+    top: 0;
+}
+
+#reference-materials li a {
+    color: var(--cyan); /* Set text color to cyan */
+    text-decoration: none; /* Remove underline */
+    font-size: 120%;
+}
+
+#reference-materials li a:hover {
+    text-decoration: underline; /* Optional: Underline on hover for better user experience */
+}
