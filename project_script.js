@@ -11,9 +11,9 @@ function displayProjectInfo() {
     // Example data for each project /Users/aarij/Documents/aarij-portfolio/project_script.js
     const projectData = {
         1: {
-            title: "/aarij/projects/<span class='highlight'>[project title]</span>",
-            highlight: "[project title]",
-            description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam animi dolor fuga tempore maiores voluptates laborum quos earum expedita delectus esse, consectetur laboriosam numquam quae accusantium cum culpa repudiandae voluptate!Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam animi dolor fuga tempore maiores voluptates laborum quos earum expedita delectus esse, consectetur laboriosam numquam quae accusantium cum culpa repudiandae voluptate!",
+            title: "/aarij/projects/<span class='highlight'>LumiSphere</span>",
+            highlight: "LumiSphere",
+            description: "The LumiSphere is an interactive nightstand LED lamp that combines modern design with intuitive controls. A joystick lets you adjust the color of the light, and a press of the joystick "freezes" the color at any position. Pressing the joystick again in its neutral position unfreezes the color, allowing for continuous customization. Additionally, a button controls brightness levels and acts as the on/off switch, making it easy to tailor the ambiance to your preference. This lamp is a perfect blend of style and functionality for any space.",
             conceptImages: ["test.jpeg", "test.jpeg", "test.jpeg"],
             video: "interaction-video1.mp4",
             arduinoCode: `// Arduino code for Project 1\nvoid setup() {}\nvoid loop() {}`,
