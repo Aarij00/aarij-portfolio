@@ -14,8 +14,8 @@ function displayProjectInfo() {
             title: "/aarij/projects/<span class='highlight'>LumiSphere</span>",
             highlight: "LumiSphere",
             description: "The LumiSphere is an interactive nightstand LED lamp that combines modern design with intuitive controls. A joystick lets you adjust the color of the light, and a press of the joystick freezes the color at any position. Pressing the joystick again in its neutral position unfreezes the color, allowing for continuous customization. Additionally, a button controls brightness levels and acts as the on/off switch, making it easy to tailor the ambiance to your preference. This lamp is a perfect blend of style and functionality for any space.",
-            conceptImages: ["test.jpeg", "test.jpeg", "test.jpeg"],
-            video: "interaction-video1.mp4",
+            conceptImages: ["cd1.jpg", "cd2.jpg", "cd3.jpg"],
+            video: "interaction-video1.mov",
             arduinoCode: `// LEDs and Button
 const int R1 = 11;
 const int G1 = 10;
@@ -281,7 +281,7 @@ void loop() {
 
         document.getElementById('project-video').src = project.video;
 
-        document.getElementById('arduino-code').textContent = project.arduinoCode;
+        document.getElementsByClassName('language-arduino')[0].innerHTML = project.arduinoCode;
 
         document.getElementById('circuit-schematic').src = project.circuitSchematic;
 
