@@ -11,7 +11,7 @@ function displayProjectInfo() {
     // Example data for each project /Users/aarij/Documents/aarij-portfolio/project_script.js
     const projectData = {
         1: {
-            title: "/aarij/projects/<span class='highlight'>LumiSphere</span>",
+            title: "/<a href='index.html'>aarij</a>/projects/<span class='highlight'>LumiSphere</span>",
             highlight: "LumiSphere",
             description: "The LumiSphere is an interactive nightstand LED lamp that combines modern design with intuitive controls. A joystick lets you adjust the color of the light, and a press of the joystick freezes the color at any position. Pressing the joystick again in its neutral position unfreezes the color, allowing for continuous customization. Additionally, a button controls brightness levels and acts as the on/off switch, making it easy to tailor the ambiance to your preference. This lamp is a perfect blend of style and functionality for any space.",
             conceptImages: ["cd1.jpg", "cd2.jpg", "cd3.jpg"],
