@@ -44,6 +44,17 @@
     text-align: center;
 }
 
+#project-title > a {
+    text-decoration: none;
+    color: var(--light-grey);
+}
+
+#project-title > a:hover {
+    text-decoration: underline;
+    color: var(--dark-grey);
+}
+
+
 
 .highlight {
     color: var(--cyan);
