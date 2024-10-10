@@ -237,14 +237,14 @@ void loop() {
             references: ["https://www.rapidtables.com/convert/color/hsv-to-rgb.html", "reference2.pdf"]
         },
         2: {
-            title: "/aarij/projects/<span class='highlight'>[project title]</span>",
-            highlight: "[project title]",
-            description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam animi dolor fuga tempore maiores voluptates laborum quos earum expedita delectus esse, consectetur laboriosam numquam quae accusantium cum culpa repudiandae voluptate!Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam animi dolor fuga tempore maiores voluptates laborum quos earum expedita delectus esse, consectetur laboriosam numquam quae accusantium cum culpa repudiandae voluptate!",
+            title: "/<a href='index.html'>aarij</a>/projects/<span class='highlight'>DrumSense</span>",
+            highlight: "DrumSense",
+            description: "DrumSense is a highly portable air drum system designed for convenience, allowing you to play or practice drums anywhere, whether at home or on the go. Using two MPU-6050 sensors, DrumSense accurately tracks stick movements and translates them into real-time drum sounds. It connects to MIDI interfaces, making it compatible with digital audio workstations, and even supports headphone use, so you can practice silently without disturbing others. DrumSense offers a seamless, immersive drumming experience, perfect for musicians looking for flexibility and mobility.",
             conceptImages: ["test.jpeg", "test.jpeg", "test.jpeg"],
             video: "interaction-video1.mp4",
             arduinoCode: `// Arduino code for Project 1\nvoid setup() {}\nvoid loop() {}`,
-            circuitSchematic: "circuit.png",
-            references: ["reference1.pdf", "reference2.pdf"]
+            circuitSchematic: "MPU.jpg",
+            references: ["https://howtomechatronics.com/tutorials/arduino/arduino-and-mpu6050-accelerometer-and-gyroscope-tutorial/#h-mpu6050-arduino-code", "https://www.youtube.com/watch?v=M9lZ5Qy5S2s"]
         },
         3: {
             title: "/aarij/projects/<span class='highlight'>[project title]</span>",
