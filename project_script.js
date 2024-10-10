@@ -243,7 +243,7 @@ void loop() {
             conceptImages: ["test.jpeg", "test.jpeg", "test.jpeg"],
             video: "interaction-video1.mp4",
             arduinoCode: `// Arduino code for Project 1\nvoid setup() {}\nvoid loop() {}`,
-            circuitSchematic: "MPU.jpg",
+            circuitSchematic: "a1_circuit.png",
             references: ["https://howtomechatronics.com/tutorials/arduino/arduino-and-mpu6050-accelerometer-and-gyroscope-tutorial/#h-mpu6050-arduino-code", "https://www.youtube.com/watch?v=M9lZ5Qy5S2s"]
         },
         3: {
