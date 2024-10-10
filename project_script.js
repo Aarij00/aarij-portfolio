@@ -240,9 +240,10 @@ void loop() {
             title: "/<a href='index.html'>aarij</a>/projects/<span class='highlight'>DrumSense</span>",
             highlight: "DrumSense",
             description: "DrumSense is a highly portable air drum system designed for convenience, allowing you to play or practice drums anywhere, whether at home or on the go. Using two MPU-6050 sensors, DrumSense accurately tracks stick movements and translates them into real-time drum sounds. It connects to MIDI interfaces, making it compatible with digital audio workstations, and even supports headphone use, so you can practice silently without disturbing others. DrumSense offers a seamless, immersive drumming experience, perfect for musicians looking for flexibility and mobility.",
-            conceptImages: ["test.jpeg", "test.jpeg", "test.jpeg"],
-            video: "interaction-video1.mp4",
-            arduinoCode: `#include <Wire.h>
+            conceptImages: ["a1_cd1.jpg", "a1_cd2.jpg", "a1_cd3.jpg"],
+            video: "a1_interaction.mp4",
+            arduinoCode: `
+#include <Wire.h>
 #include <MPU6050.h>
 #include "MIDIUSB.h"
 
