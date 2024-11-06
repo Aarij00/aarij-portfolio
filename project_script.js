@@ -398,14 +398,244 @@ void sendNoteOff(byte pitch, byte velocity) {
             references: ["https://howtomechatronics.com/tutorials/arduino/arduino-and-mpu6050-accelerometer-and-gyroscope-tutorial/#h-mpu6050-arduino-code", "https://www.youtube.com/watch?v=M9lZ5Qy5S2s"]
         },
         3: {
-            title: "/aarij/projects/<span class='highlight'>[project title]</span>",
-            highlight: "[project title]",
-            description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam animi dolor fuga tempore maiores voluptates laborum quos earum expedita delectus esse, consectetur laboriosam numquam quae accusantium cum culpa repudiandae voluptate!Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam animi dolor fuga tempore maiores voluptates laborum quos earum expedita delectus esse, consectetur laboriosam numquam quae accusantium cum culpa repudiandae voluptate!",
-            conceptImages: ["test.jpeg", "test.jpeg", "test.jpeg"],
+            title: "/aarij/projects/<span class='highlight'>SmartGlass</span>",
+            highlight: "SmartGlass",
+            description: "SmartGlass is an intelligent timing system that merges the classic charm of an hourglass with modern technology to enhance your productivity. Equipped with an Arduino, stepper motor, LCD, and keypad, SmartGlass allows you to set customizable timers with ease. For durations longer than the default 60-minute hourglass, the device automatically rotates the hourglass 180 degrees, adding extra hours as needed. Integrated with a Chrome extension, you can specify 'irrelevant' websites that might distract you during work or study sessions. Visiting these sites prompts SmartGlass to pause the timer by rotating the hourglass 90 degrees, resuming only when you close the distracting tabs. This ensures you remain accountable and focused, effectively studying or working for the full duration you've set. By blending physical and digital elements, SmartGlass offers a unique and engaging way to manage your time, making it an ideal tool for students and professionals seeking to boost their productivity.",
+            conceptImages: ["a2_cd1.jpeg", "a2_cd2.jpg", "a2_cd3.jpg"],
             video: "interaction-video1.mp4",
-            arduinoCode: `// Arduino code for Project 1\nvoid setup() {}\nvoid loop() {}`,
-            circuitSchematic: "circuit.png",
-            references: ["reference1.pdf", "reference2.pdf"]
+            arduinoCode: `// LATEST
+#include <Keypad.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <AccelStepper.h>
+
+#define MotorInterfaceType 8  // For 28BYJ-48 with ULN2003
+
+#define motorPin1  10     // IN1 on the ULN2003 driver
+#define motorPin2  11     // IN2 on the ULN2003 driver
+#define motorPin3  12     // IN3 on the ULN2003 driver
+#define motorPin4  13     // IN4 on the ULN2003 driver
+
+AccelStepper stepper = AccelStepper(MotorInterfaceType, motorPin1, motorPin3, motorPin2, motorPin4);
+
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+const byte ROWS = 4;
+const byte COLS = 4;
+char keys[ROWS][COLS] = {
+  {'1', '2', '3', 'A'},
+  {'4', '5', '6', 'B'},
+  {'7', '8', '9', 'C'},
+  {'*', '0', '#', 'D'}
+};
+byte rowPins[ROWS] = {5, 4, 3, 2}; // 8, 7, 6, 5
+byte colPins[COLS] = {9, 8, 7, 6}; // 4, 3, 2, 1
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+
+const int stepsPerRevolution = 4076;
+
+unsigned long timerDuration = 0;
+unsigned long timerStartTime = 0;
+unsigned long elapsedTime = 0;
+bool timerRunning = false;
+bool timerPaused = false;
+bool timerPausedByUser = false;
+String inputBuffer = ""; 
+
+void setup() {
+  Serial.begin(9600);
+  while (!Serial) {
+    ;
+  }
+  lcd.init();lcd.backlight();lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Enter hours:");
+
+  stepper.setMaxSpeed(1000.0);
+  stepper.setAcceleration(500.0);
+}
+
+void loop() {
+  handleKeypadInput();
+  handleSerialInput();
+  updateTimer();
+}
+
+void handleSerialInput() {
+  if (Serial.available() > 0) {
+    String serialInput = Serial.readStringUntil('\n');
+    Serial.println("Serial Input: " + String(serialInput));
+    if (serialInput == String('p')) { // PAUSE/UNPAUSE message from browser
+      if (!timerPausedByUser) {
+        togglePause();
+      }
+    }
+    else if (serialInput == 'r') { // simulates REVERSE message from browser
+      Serial.println("TODO: Reverse timer as punishment");
+    }
+    else if (serialInput == String('d')) { // debug
+      Serial.print("Timer running: ");
+      Serial.println(timerRunning);
+      Serial.print("Timer Paused: ");
+      Serial.println(timerPaused);
+      Serial.print("Elapsed: ");
+      Serial.println(elapsedTime / 1000.0);
+    }
+  }
+}
+
+void handleKeypadInput() {
+  char key = keypad.getKey();
+
+  if (key) {
+    Serial.println("Keypad Input: " + String(key));
+    if (key >= '0' && key <= '9') {
+      if (!timerRunning) {
+        inputBuffer += key;
+        lcd.setCursor(0, 1);
+        lcd.print(inputBuffer + "       ");
+      }
+    } else if (key == '*') {
+      if (!timerRunning) {
+        inputBuffer = "";
+        lcd.setCursor(0, 1);
+        lcd.print("Input cleared   ");
+        delay(1000);
+        lcd.setCursor(0, 1);
+        lcd.print("                ");
+      }
+    } else if (key == '#') {
+      if (!timerRunning && inputBuffer.length() > 0) {
+        startTimer(inputBuffer.toInt());
+      }
+    } else if (key == 'A') {
+      if (timerRunning) {
+        timerPausedByUser = !timerPausedByUser;
+        togglePause();
+      }
+    } else if (key == 'C') {
+      if (timerRunning && !timerPaused){
+        cancelTimer();
+      }
+    }
+  }
+}
+
+void startTimer(int hours) {
+  if (hours < 1 || hours > 9) {
+    lcd.setCursor(0, 1);
+    lcd.print("Invalid Input   ");
+    inputBuffer = "";
+    delay(2000);
+    lcd.setCursor(0, 1);
+    lcd.print("Enter hours:    ");
+    return;
+  }
+  timerDuration = (unsigned long)hours * 60 * 60 * 1000; // Convert hours to milliseconds
+  timerStartTime = millis();
+  elapsedTime = 0;
+  timerRunning = true;
+  timerPaused = false;
+
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Timer started");
+  lcd.setCursor(0, 1);
+  lcd.print("for " + String(hours) + " hour(s)");
+
+  inputBuffer = "";
+
+  // Move motor to START state
+  moveToStartState();
+}
+
+void cancelTimer() {
+  timerRunning = false;
+  timerPaused = false;
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Timer Canceled");
+  moveToStopState(); // Return to INITIAL state
+  delay(2000);
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Enter hours:");
+}
+
+void togglePause() {
+  if (timerRunning) {
+    timerPaused = !timerPaused;
+    if (timerPaused) {
+      lcd.setCursor(0, 1);
+      lcd.print("Timer Paused    ");
+      moveToPauseState();
+    } else {
+      lcd.setCursor(0, 1);
+      lcd.print("Timer Resumed   ");
+      moveToStartStateFromPause();
+      // Adjust the timerStartTime to account for the paused duration
+      timerStartTime = millis() - elapsedTime;
+    }
+  }
+}
+
+void updateTimer() {
+  if (timerRunning && !timerPaused) {
+    elapsedTime = millis() - timerStartTime;
+
+    // Check if timer has completed
+    if (elapsedTime >= timerDuration) {
+      timerRunning = false;
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Timer Completed");
+    }
+    else {
+      // Check if it's time to flip the hourglass
+      unsigned long flipsNeeded = elapsedTime / (60 * 60 * 1000); // Number of hours elapsed
+      static unsigned long lastFlips = 0;
+
+      if (flipsNeeded > lastFlips) {
+        lastFlips = flipsNeeded;
+        // Flip the hourglass
+        moveToStartState(); // Flip 180 degrees
+      }
+    }
+
+  }
+}
+
+void moveToStartState() {
+  int steps = stepsPerRevolution / 2; // 180 degrees
+  moveStepper(steps);
+}
+void moveToStartStateFromPause() {
+  int steps = stepsPerRevolution / 4; // 90 degrees
+  moveStepper(-steps);
+}
+
+void moveToPauseState() {
+  if (timerRunning) {
+    int steps = stepsPerRevolution / 4; // 90 degrees
+    moveStepper(steps);
+  }
+}
+
+void moveToStopState() {
+  int steps = stepsPerRevolution / 2; // 180 degrees
+  moveStepper(steps);
+}
+
+void moveStepper(int stepsToMove) {
+  stepper.move(stepsToMove);
+  stepper.runToPosition();
+}
+
+
+`,
+            circuitSchematic: "a2_circuit.png",
+            references: ["https://www.yeggi.com/q/shaft+coupler/", "https://www.instructables.com/BYJ48-Stepper-Motor/"]
         },
         4: {
             title: "/aarij/projects/<span class='highlight'>[project title]</span>",
