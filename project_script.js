@@ -401,7 +401,7 @@ void sendNoteOff(byte pitch, byte velocity) {
             title: "/aarij/projects/<span class='highlight'>SmartGlass</span>",
             highlight: "SmartGlass",
             description: "SmartGlass is an intelligent timing system that merges the classic charm of an hourglass with modern technology to enhance your productivity. Equipped with an Arduino, stepper motor, LCD, and keypad, SmartGlass allows you to set customizable timers with ease. For durations longer than the default 60-minute hourglass, the device automatically rotates the hourglass 180 degrees, adding extra hours as needed. Integrated with a Chrome extension, you can specify 'irrelevant' websites that might distract you during work or study sessions. Visiting these sites prompts SmartGlass to pause the timer by rotating the hourglass 90 degrees, resuming only when you close the distracting tabs. This ensures you remain accountable and focused, effectively studying or working for the full duration you've set. By blending physical and digital elements, SmartGlass offers a unique and engaging way to manage your time, making it an ideal tool for students and professionals seeking to boost their productivity.",
-            conceptImages: ["a2_cd1.jpeg", "a2_cd2.jpg", "a2_cd3.jpg"],
+            conceptImages: ["a2_cd1.png", "a2_cd2.jpg", "a2_cd3.jpg"],
             video: "interaction-video1.mp4",
             arduinoCode: `// LATEST
 #include <Keypad.h>
