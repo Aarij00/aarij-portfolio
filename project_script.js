@@ -638,14 +638,128 @@ void moveStepper(int stepsToMove) {
             references: ["https://www.yeggi.com/q/shaft+coupler/", "https://www.instructables.com/BYJ48-Stepper-Motor/"]
         },
         4: {
-            title: "/aarij/projects/<span class='highlight'>[project title]</span>",
-            highlight: "[project title]",
-            description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam animi dolor fuga tempore maiores voluptates laborum quos earum expedita delectus esse, consectetur laboriosam numquam quae accusantium cum culpa repudiandae voluptate!Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam animi dolor fuga tempore maiores voluptates laborum quos earum expedita delectus esse, consectetur laboriosam numquam quae accusantium cum culpa repudiandae voluptate!",
-            conceptImages: ["test.jpeg", "test.jpeg", "test.jpeg"],
-            video: "interaction-video1.mp4",
-            arduinoCode: `// Arduino code for Project 1\nvoid setup() {}\nvoid loop() {}`,
+            title: "/aarij/projects/<span class='highlight'>PulseLink</span>",
+            highlight: "PulseLink",
+            description: `PulseLink is an interactive wearable project featuring two 3D-printed bracelets equipped with ESP32 microcontrollers, vibration motors, and force sensors. Using ESP-NOW for wireless communication, the bracelets create a real-time connection between users. When one person touches the force sensor on their bracelet, the other person's bracelet provides haptic feedback through a vibrating motor, fostering a sense of physical connection across distances. PulseLink seamlessly blends hardware design, wireless communication, and user experience to enable intuitive, tactile interaction.`,
+            conceptImages: ["a3_cd1.jpg", "a3_cd2.jpg", "a3_cd3.jpg"],
+            video: "a3_interaction.mp4",
+            arduinoCode: `#include <WiFi.h>
+#include <esp_now.h>
+
+// Define pins
+#define MOTOR_PIN SCK          // GPIO pin connected to the transistor base
+#define FORCE_SENSOR_PIN A2  // Analog pin connected to the force sensor
+const int threshold = 50;  // Adjust based on your sensor readings
+
+uint8_t peerMAC[] = {0xcc, 0xdb, 0xa7, 0x32, 0x1a, 0x6c};
+char message[250];
+
+
+// Callback function to handle received messages
+void onDataReceived(const esp_now_recv_info_t* recvInfo, const uint8_t* data, int dataLen) {
+  Serial.print("Message received from: ");
+  for (int i = 0; i < 6; i++) {
+    Serial.printf("%02X", recvInfo->src_addr[i]);
+    if (i < 5) Serial.print(":");
+  }
+  Serial.println();
+
+  // Process the received data
+  char message[dataLen + 1];
+  memcpy(message, data, dataLen);
+  message[dataLen] = '\0';  // Null-terminate the message
+
+  Serial.printf("Message: %s\n", message);
+  if (strcmp(message, "ON") == 0) {
+    digitalWrite(MOTOR_PIN, HIGH);
+  }
+  else if (strcmp(message, "OFF") == 0) {
+    digitalWrite(MOTOR_PIN, LOW);
+  }
+}
+
+// Callback function to handle message sending status
+void onDataSent(const uint8_t* macAddr, esp_now_send_status_t status) {
+  Serial.print("Last message sent to: ");
+  for (int i = 0; i < 6; i++) {
+    Serial.printf("%02X", macAddr[i]);
+    if (i < 5) Serial.print(":");
+  }
+  Serial.print(" Status: ");
+  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Success" : "Fail");
+}
+
+
+
+
+void setup() {
+  Serial.begin(115200);
+  // Set up the motor control pin
+  pinMode(MOTOR_PIN, OUTPUT);
+  digitalWrite(MOTOR_PIN, LOW);  // Ensure motor is off at startup
+
+  // Initialize Wi-Fi in station mode
+  WiFi.mode(WIFI_STA);
+  Serial.println("Wi-Fi initialized in STA mode");
+
+   // Initialize ESP-NOW
+  if (esp_now_init() != ESP_OK) {
+    Serial.println("ESP-NOW initialization failed!");
+    return;
+  }
+  Serial.println("ESP-NOW initialized");
+
+  // Register callback functions
+  esp_now_register_recv_cb(onDataReceived);
+  esp_now_register_send_cb(onDataSent);
+
+  // Register the peer
+  esp_now_peer_info_t peerInfo;
+  esp_now_del_peer(peerMAC);
+  memcpy(peerInfo.peer_addr, peerMAC, 6);
+  peerInfo.channel = WiFi.channel();  // Use default Wi-Fi channel
+  peerInfo.encrypt = false;
+  peerInfo.ifidx = WIFI_IF_STA;
+  if (esp_now_add_peer(&peerInfo) != ESP_OK) {
+    Serial.println("Failed to add peer");
+    return;
+  }
+  Serial.println("Peer added");
+
+}
+
+void loop() {
+  Serial.println(WiFi.macAddress());
+  // Serial.println(WiFi.macAddress());
+  // Read the analog value from the force sensor
+  int sensorValue = analogRead(FORCE_SENSOR_PIN);
+
+  // Check if the sensor value exceeds the threshold
+  if (sensorValue > threshold) {
+    const char* message = "ON";
+    esp_err_t result = esp_now_send(peerMAC, (uint8_t*)message, strlen(message));
+
+    if (result == ESP_OK) {
+      Serial.println("Message sent successfully");
+    } else {
+      Serial.println("Error sending message");
+    }
+  } 
+  else {
+    const char* message = "OFF";
+    esp_err_t result = esp_now_send(peerMAC, (uint8_t*)message, strlen(message));
+
+    if (result == ESP_OK) {
+      Serial.println("Message sent successfully");
+    } else {
+      Serial.println("Error sending message");
+    }
+  }
+
+  delay(250);
+}`,
             circuitSchematic: "circuit.png",
-            references: ["reference1.pdf", "reference2.pdf"]
+            references: ["https://randomnerdtutorials.com/esp-now-esp32-arduino-ide/", "https://www.youtube.com/watch?v=3hoBwa0ccys"]
         },
     };
 
