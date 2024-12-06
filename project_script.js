@@ -758,7 +758,7 @@ void loop() {
 
   delay(250);
 }`,
-            circuitSchematic: "circuit.png",
+            circuitSchematic: "a3_circuit.png",
             references: ["https://randomnerdtutorials.com/esp-now-esp32-arduino-ide/", "https://www.youtube.com/watch?v=3hoBwa0ccys"]
         },
     };
